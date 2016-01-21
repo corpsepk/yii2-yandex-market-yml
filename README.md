@@ -1,6 +1,6 @@
 Yandex.Market YML Module for Yii2
 ==========================
-Yii2 module for automatically [Yandex.Market YML](https://yandex.ru/support/webmaster/goods-prices/technical-requirements.xml).
+Yii2 module for automatically generation [Yandex.Market YML](https://yandex.ru/support/webmaster/goods-prices/technical-requirements.xml).
 
 Installation
 ------------
