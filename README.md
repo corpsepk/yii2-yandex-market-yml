@@ -67,6 +67,7 @@ Add a new rule for `urlManager` of your application's configuration file, for ex
         ['pattern' => 'yandex-market', 'route' => 'yml/default/index', 'suffix' => '.yml'],
     ],
 ],
+```
 
 Configure models
 ------------
@@ -128,7 +129,4 @@ public function behaviors()
         ],
     ];
 }
-```
-
-
 ```
