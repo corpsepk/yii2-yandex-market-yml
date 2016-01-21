@@ -445,7 +445,7 @@ class Offer extends Model
      * @var array
      */
     public $offerElementAttributes = [
-        'id', 'available', 'bid', 'cbid'
+        'id', 'type', 'available', 'bid', 'cbid'
     ];
 
     /**
