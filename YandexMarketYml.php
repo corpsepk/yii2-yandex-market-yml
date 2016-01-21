@@ -91,7 +91,7 @@ class YandexMarketYml extends Module
         $ymlData = $this->createControllerByID('default')->renderPartial('index', [
             'shop' => $shop,
         ]);
-//        $this->cacheProvider->set($this->cacheKey, $ymlData, $this->cacheExpire);
+        $this->cacheProvider->set($this->cacheKey, $ymlData, $this->cacheExpire);
 
         return $ymlData;
     }
