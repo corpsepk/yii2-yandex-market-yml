@@ -1,0 +1,25 @@
+{
+	"name": "corpsepk/yii2-yandex-market-yml",
+	"description": "Yii2 module for automatically generation Yandex.Market YML",
+	"keywords": ["yii2", "yml", "yandex.market", "module"],
+	"type": "yii2-extension",
+	"license": "MIT",
+	"support": {
+		"source": "https://github.com/corpsepk/corpsepk/yii2-yandex-market-yml",
+        "issues": "https://github.com/corpsepk/corpsepk/yii2-yandex-market-yml/issues"
+	},
+	"authors": [
+        {
+            "name": "Alexsandr Khramov",
+            "homepage" : "https://github.com/corpsepk"
+        }
+	],
+	"require": {
+		"yiisoft/yii2": "*"
+	},
+	"autoload": {
+		"psr-4": {
+            "corpsepk\\yml\\": ""
+        }
+	}
+}
