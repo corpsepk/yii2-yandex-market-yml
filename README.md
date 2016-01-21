@@ -9,13 +9,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 * Either run
 
 ```
-php composer.phar require --prefer-dist "corpsepk/yii2-yandex-market-yml" "*"
+php composer.phar require --prefer-dist "corpsepk/yii2-yandex-market-yml" "@dev"
 ```
 
 or add
 
 ```json
-"corpsepk/yii2-yandex-market-yml" : "*"
+"corpsepk/yii2-yandex-market-yml" : "@dev"
 ```
 
 to the `require` section of your application's `composer.json` file.
