@@ -117,7 +117,7 @@ public function behaviors()
                 /** @var self $model */
                 return new Offer([
                     'id' => $model->id,
-                    'url' => $model->getUrl(true),
+                    'url' => $model->getUrl(true), // absolute url e.g. http://example.com/item/1256
                     'price' => $model->getPrice(),
                     'currencyId' => 'RUR',
                     'categoryId' => $model->category_id,
