@@ -68,6 +68,10 @@ $writer->startElement('offers');
 
 foreach ($shop->offers as $offer) {
     /** @var $offer \corpsepk\yml\models\Offer */
+    if ($offer->errors) {
+        continue;
+    }
+
     $writer->startElement('offer');
 
     foreach ($offer->offerElementAttributes as $attribute) {
@@ -91,8 +95,11 @@ foreach ($shop->offers as $offer) {
     }
 
     if (is_array($offer->param)) {
-        foreach ($offer->param as $name => $value) {
-            $writer->writeElement($name, Html::encode($value));
+        foreach ($offer->param as $param) {
+            $writer->startElement('param');
+            $writer->writeAttribute('name', $param['name']);
+            $writer->text($param['value']);
+            $writer->endElement();
         }
     }
 
