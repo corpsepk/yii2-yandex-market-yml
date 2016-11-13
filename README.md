@@ -15,7 +15,7 @@ php composer.phar require --prefer-dist "corpsepk/yii2-yandex-market-yml" "~0.2"
 or add
 
 ```json
-"corpsepk/yii2-yandex-market-yml" : "@dev"
+"corpsepk/yii2-yandex-market-yml" : "~0.2"
 ```
 
 to the `require` section of your application's `composer.json` file.
