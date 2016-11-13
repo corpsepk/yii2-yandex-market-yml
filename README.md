@@ -121,6 +121,15 @@ public function behaviors()
                     'price' => $model->getPrice(),
                     'currencyId' => 'RUR',
                     'categoryId' => $model->category_id,
+                    'picture' => $model->cover ? $model->cover->getUrl() : null,
+                    /**
+                     * Or as array
+                     * don't forget that yandex-market accepts 10 pictures max
+                     * @see https://yandex.ru/support/partnermarket/picture.xml
+                     */
+                    'picture' => ArrayHelper::map($model->images, 'id', function ($image) {
+                        return $image->getUrl();
+                    }),
                     'name' => $model->name,
                     'vendor' => $model->brand ? $model->brand->name : null,
                     'description' => $model->description,
