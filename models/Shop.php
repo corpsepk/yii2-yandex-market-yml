@@ -7,7 +7,9 @@
 
 namespace corpsepk\yml\models;
 
+use Yii;
 use yii\base\Model;
+use yii\helpers\Html;
 
 /**
  * @link https://partner.market.yandex.ru/legal/tt/
@@ -164,5 +166,26 @@ class Shop extends Model
         }
 
         return true;
+    }
+
+    public function validateOffers()
+    {
+        foreach ($this->offers as $offer) {
+            /** @var $offer Offer */
+            if (!$offer->validate()) {
+                foreach ($offer->getFirstErrors() as $error) {
+                    Yii::error(Html::encode($error));
+                }
+            }
+        };
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterValidate()
+    {
+        parent::afterValidate();
+        $this->validateOffers();
     }
 }
