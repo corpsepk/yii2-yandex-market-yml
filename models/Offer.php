@@ -8,6 +8,7 @@
 namespace corpsepk\yml\models;
 
 use yii\base\Model;
+use yii\helpers\VarDumper;
 
 /**
  * @link https://partner.market.yandex.ru/legal/tt
@@ -468,14 +469,14 @@ class Offer extends Model
             [
                 [
                     'id', 'type', 'bid', 'cbid',
-                    'url', 'price', 'oldprice', 'market_category',
+                    'url', 'price', 'oldprice',
                     'categoryId', 'local_delivery_cost',
                     'typePrefix', 'name', 'vendorCode', 'model',
                     'description', 'manufacturer_warranty',
                     'seller_warranty', 'country_of_origin',
                     'expiry', 'weight', 'dimensions',
                 ],
-                'string'
+                'safe'
             ],
             ['sale_notes', 'string', 'max' => 50],
 
@@ -512,6 +513,13 @@ class Offer extends Model
                     $this->addError('param', 'Attribute "param" must be an array');
                     return false;
                 }
+                foreach ($this->param as $param) {
+                    if (!isset($param['name']) || !isset($param['value'])) {
+                        $this->addError('param', 'Each param element must contain `name` and `value` keys');
+                        return false;
+                    }
+                }
+                return true;
             }, 'when' => function ($model) {
                 return !empty($model);
             }]
