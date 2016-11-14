@@ -20,6 +20,7 @@ or add
 
 to the `require` section of your application's `composer.json` file.
 
+
 Configure config
 ------------
 Configure the `cache` component of your application's configuration file, for example:
@@ -68,6 +69,7 @@ Add a new rule for `urlManager` of your application's configuration file, for ex
     ],
 ],
 ```
+
 
 Configure models
 ------------
