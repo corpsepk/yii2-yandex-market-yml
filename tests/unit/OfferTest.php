@@ -5,7 +5,7 @@ use corpsepk\yml\models\Offer;
 use yii\base\Security;
 
 /**
- * SoftDeleteTest
+ * OfferTestTest
  */
 class OfferTest extends \PHPUnit_Framework_TestCase
 {
