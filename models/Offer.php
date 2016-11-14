@@ -4,11 +4,9 @@
  * @copyright Copyright (c) 2016 Corpsepk
  * @license http://opensource.org/licenses/MIT
  */
-
 namespace corpsepk\yml\models;
 
 use yii\base\Model;
-use yii\helpers\VarDumper;
 
 /**
  * @link https://partner.market.yandex.ru/legal/tt
@@ -16,6 +14,12 @@ use yii\helpers\VarDumper;
  */
 class Offer extends Model
 {
+    /**
+     * @link https://yandex.ru/support/partnermarket/currencies.xml
+     * @var array
+     */
+    const CURRENCY_AVAILABLE = ['RUR', 'RUB', 'UAH', 'BYN', 'KZT', 'USD', 'EUR'];
+
     /**
      * В атрибуте id указывается идентификатор товарного предложения.
      * Атрибут может содержать только цифры и латинские буквы.
@@ -44,7 +48,7 @@ class Offer extends Model
      *
      * Указание типа описания обязательно за исключением упрощенного описания.
      * Товарные предложения, описанные не в соответствии со своим типом, могут не приниматься к публикации.
-     * @var
+     * @var string
      */
     public $type;
 
@@ -352,8 +356,13 @@ class Offer extends Model
     public $adult;
 
     /**
-     * Возрастная категория товара. Допустимые значения: 0, 6, 12, 16, 18.
      * Необязательный элемент.
+     *
+     * TODO
+     * @link https://yandex.ru/support/partnermarket/export/vendor-model.xml
+     * В форматеYML:
+     * Годы задаются с помощью атрибута unit со значением year. Допустимые значения параметра age при unit="year": 0, 6, 12, 16, 18.
+     * Месяцы задаются с помощью атрибута unit со значением month. Допустимые значения параметра age при unit="month": 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12.
      *
      * @var integer|null
      */
@@ -437,7 +446,13 @@ class Offer extends Model
      * Для остальных категорий — необязательный элемент.
      * Элемент offer может содержать несколько элементов param.
      *
-     * @var array|string|null
+     * Массив должен содержать элементы с ключами `name` и `value` например,
+     * [
+     *      ['name' => 'Размер', 'value' => '42-44'],
+     *      ['name' => 'Цвет', 'value' => 'Красный']
+     * ]
+     *
+     * @var array|null
      */
     public $param;
 
@@ -464,13 +479,37 @@ class Offer extends Model
     public function rules()
     {
         return [
-            [['price', 'currencyId', 'categoryId', 'vendor'], 'required'],
+            ['id', function () {
+                $this->id = (string)$this->id;
+                return true;
+            }],
+            ['id', 'required'],
+            ['id', 'string', 'max' => 20],
 
+            ['url', 'string', 'max' => 512],
+
+            ['currencyId', 'required'],
+            ['currencyId', 'in', 'range' => self::CURRENCY_AVAILABLE],
+
+            ['categoryId', 'required'],
+            ['categoryId', 'number', 'min' => 1],
+            ['categoryId', function () {
+                if (strlen($this->categoryId) > 18) {
+                    return false;
+                };
+
+                return true;
+            }, 'message' => 'Category id must be less than 18 sybols'],
+
+            ['vendor', 'required'],
+            ['vendor', 'string'],
+
+            // TODO Add `expiry` date validator
+            // TODO Add `weight` number validator
+            // TODO Add `dimensions` validator
             [
                 [
-                    'id', 'type', 'bid', 'cbid',
-                    'url', 'price', 'oldprice',
-                    'categoryId', 'local_delivery_cost',
+                    'type', 'bid', 'cbid', 'price', 'categoryId',
                     'typePrefix', 'name', 'vendorCode', 'model',
                     'description', 'manufacturer_warranty',
                     'seller_warranty', 'country_of_origin',
@@ -478,16 +517,36 @@ class Offer extends Model
                 ],
                 'safe'
             ],
+
+            ['price', 'required'],
+            ['oldprice', 'safe'],
+            // В <oldprice> указывается старая цена товара, которая должна быть обязательно выше новой цены (<price>).
+            // Скидка может показываться в процентах.
+            ['oldprice', 'compare', 'compareAttribute' => 'price', 'operator' => '>', 'type' => 'number', 'when' => function ($model) {
+                /** @var $model self */
+                return strpos($this->oldprice, '%') === false;
+            }],
+
+            ['local_delivery_cost', 'number'],
+
             ['sale_notes', 'string', 'max' => 50],
 
-            ['age', 'integer'],
-            ['age', 'in', 'range' => [0, 6, 12, 16, 18]],
+            // TODO Not implemented yet
+//            ['age', 'integer'],
+//            ['age', 'in', 'range' => [0, 6, 12, 16, 18]],
 
             [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], 'boolean'],
 
             ['barcode', 'safe'],
 
-            ['picture', 'safe'],
+            ['picture', 'string', 'max' => 512, 'when' => function ($model) {
+                /** @var $model self */
+                return is_string($model->picture);
+            }],
+            ['picture', 'each', 'rule' => ['string', 'max' => 512], 'when' => function ($model) {
+                /** @var $model self */
+                return is_array($model->picture);
+            }],
             ['picture', function () {
                 if (count($this->picture) > 10) {
                     $this->addError('Offer can contain maximum 10 pictures, ' . count($this->picture) . ' included');
