@@ -2,6 +2,9 @@ Yandex.Market YML Module for Yii2
 ==========================
 Yii2 module for automatically generation [Yandex.Market YML](https://yandex.ru/support/webmaster/goods-prices/technical-requirements.xml).
 
+[![Build Status](https://img.shields.io/travis/corpsepk/yii2-yandex-market-yml/master.svg?style=flat)](https://travis-ci.org/corpsepk/yii2-yandex-market-yml)
+[![Code Coverage](https://scrutinizer-ci.com/g/corpsepk/yii2-yandex-market-yml/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/corpsepk/yii2-yandex-market-yml/?branch=master)
+
 Installation
 ------------
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
