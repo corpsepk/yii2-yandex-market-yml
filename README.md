@@ -144,3 +144,8 @@ public function behaviors()
     ];
 }
 ```
+
+
+Useful links
+------------
+Yandex XML validator - https://webmaster.yandex.ru/tools/xml-validator/
