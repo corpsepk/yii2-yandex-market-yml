@@ -8,6 +8,7 @@
  */
 
 use yii\helpers\Html;
+use corpsepk\yml\helpers\XmlWriterHelper;
 
 $writer = new XMLWriter();
 $writer->openUri('php://output');
@@ -75,8 +76,14 @@ foreach ($shop->offers as $offer) {
     $writer->startElement('offer');
 
     foreach ($offer->offerElementAttributes as $attribute) {
-        if (!empty($offer->$attribute)) {
-            $writer->writeAttribute($attribute, Html::encode($offer->$attribute));
+        if (empty($offer->$attribute)) {
+            continue;
+        }
+
+        // bool must be a string: "true"/"false"
+        $value = $offer->$attribute;
+        if (is_bool($value)) {
+            $value = XmlWriterHelper::convertBoolToString($value);
         }
     }
 
@@ -96,8 +103,14 @@ foreach ($shop->offers as $offer) {
 
     if (is_array($offer->param)) {
         foreach ($offer->param as $param) {
+            // bool must be a string: "true"/"false"
+            $value = $param['name'];
+            if (is_bool($value)) {
+                $value = XmlWriterHelper::convertBoolToString($value);
+            }
+
             $writer->startElement('param');
-            $writer->writeAttribute('name', $param['name']);
+            $writer->writeAttribute('name', $value);
             $writer->text($param['value']);
             $writer->endElement();
         }
