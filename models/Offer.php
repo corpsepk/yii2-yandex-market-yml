@@ -536,6 +536,14 @@ class Offer extends Model
 //            ['age', 'in', 'range' => [0, 6, 12, 16, 18]],
 
             [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], 'boolean'],
+            // Булево должно быть преобразовано к строке "true"/"false"
+            // https://yandex.ru/support/partnermarket/elements/id-type-available.xml
+            [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], function ($attribute) {
+                $this->$attribute = $this->$attribute ? 'true' : 'false';
+            }, 'when' => function ($model, $attribute) {
+                /** @var $model self */
+                return is_bool($model->$attribute);
+            }],
 
             ['barcode', 'safe'],
 
