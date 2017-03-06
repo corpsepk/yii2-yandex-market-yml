@@ -5,9 +5,9 @@ use corpsepk\yml\models\Offer;
 use yii\base\Security;
 
 /**
- * OfferTestTest
+ * OfferModelTest
  */
-class OfferTest extends \PHPUnit_Framework_TestCase
+class OfferModelTest extends \PHPUnit_Framework_TestCase
 {
     public function testValidateId()
     {
