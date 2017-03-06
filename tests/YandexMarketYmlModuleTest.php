@@ -22,7 +22,7 @@ class YandexMarketYmlModuleTest extends \PHPUnit_Framework_TestCase
 
         /** @var YandexMarketYml $module */
         $module = Yii::$app->getModule('YandexMarketYml');
-        $actual = $module->createControllerByID('default')->renderPartial('index', [
+        $yml = $module->createControllerByID('default')->renderPartial('index', [
             'shop' => new Shop([
                 'name' => 'MyCompanyName',
                 'company' => 'LTD MyCompanyName',
@@ -66,6 +66,9 @@ class YandexMarketYmlModuleTest extends \PHPUnit_Framework_TestCase
             ]),
         ]);
         $expected = file_get_contents(__DIR__ . '/data/yml.bin');
+        // TODO mock date function, and remove this
+        $actual = preg_replace('/yml_catalog date="(.*?)"/', 'yml_catalog date="2017-01-01 10:00"', $yml);
+
         $this->assertEquals($expected, $actual);
     }
 }
