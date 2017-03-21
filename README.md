@@ -69,7 +69,7 @@ Add a new rule for `urlManager` of your application's configuration file, for ex
 ```php
 'urlManager' => [
     'rules' => [
-        ['pattern' => 'yandex-market', 'route' => 'yandexMarketYml/default/index', 'suffix' => '.yml'],
+        ['pattern' => 'yandex-market', 'route' => 'YandexMarketYml/default/index', 'suffix' => '.yml'],
     ],
 ],
 ```
