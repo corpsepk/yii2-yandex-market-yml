@@ -65,7 +65,7 @@ class YandexMarketYmlModuleTest extends \PHPUnit_Framework_TestCase
                 ]
             ]),
         ]);
-        $expected = file_get_contents(__DIR__ . '/data/yml.bin');
+        $expected = file_get_contents(__DIR__.'/data/yml.bin');
         // TODO mock date function, and remove this
         $actual = preg_replace('/yml_catalog date="(.*?)"/', 'yml_catalog date="2017-01-01 10:00"', $yml);
 
