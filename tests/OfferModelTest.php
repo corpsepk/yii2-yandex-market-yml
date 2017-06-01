@@ -226,7 +226,7 @@ class OfferModelTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($model->validate(['vendor']));
 
         $model->vendor = 123;
-        $this->assertFalse($model->validate(['vendor']));
+        $this->assertTrue($model->validate(['vendor']));
     }
 
     public function testValidateVendorCode()
