@@ -255,7 +255,7 @@ class Offer extends Model
 
     /**
      * Производитель.
-     * Обязательный элемент.
+     * Необязательный элемент.
      *
      * @var string
      */
@@ -501,16 +501,13 @@ class Offer extends Model
                 return true;
             }, 'message' => 'Category id must be less than 18 sybols'],
 
-            ['vendor', 'required'],
-            ['vendor', 'string'],
-
             // TODO Add `expiry` date validator
             // TODO Add `weight` number validator
             // TODO Add `dimensions` validator
             [
                 [
                     'type', 'bid', 'cbid', 'price', 'categoryId',
-                    'typePrefix', 'name', 'vendorCode', 'model',
+                    'typePrefix', 'name', 'vendor', 'vendorCode', 'model',
                     'description', 'manufacturer_warranty',
                     'seller_warranty', 'country_of_origin',
                     'expiry', 'weight', 'dimensions',
