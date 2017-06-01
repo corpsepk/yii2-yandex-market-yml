@@ -215,9 +215,9 @@ class OfferModelTest extends \PHPUnit_Framework_TestCase
     {
         $model = new Offer();
 
-        // Обязательный элемент
+        // Необязательный элемент
         $model->vendor = null;
-        $this->assertFalse($model->validate(['vendor']));
+        $this->assertTrue($model->validate(['vendor']));
 
         $model->vendor = '123abc';
         $this->assertTrue($model->validate(['vendor']));
