@@ -504,7 +504,7 @@ class Offer extends Model
                 };
 
                 return true;
-            }, 'message' => 'Category id must be less than 18 sybols'],
+            }, 'message' => 'Category id must be less than 18 symbols'],
 
             // TODO Add `expiry` date validator
             // TODO Add `weight` number validator
@@ -524,8 +524,7 @@ class Offer extends Model
             ['oldprice', 'safe'],
             // В <oldprice> указывается старая цена товара, которая должна быть обязательно выше новой цены (<price>).
             // Скидка может показываться в процентах.
-            ['oldprice', 'compare', 'compareAttribute' => 'price', 'operator' => '>', 'type' => 'number', 'when' => function ($model) {
-                /** @var $model self */
+            ['oldprice', 'compare', 'compareAttribute' => 'price', 'operator' => '>', 'type' => 'number', 'when' => function (self $model) {
                 return strpos($this->oldprice, '%') === false;
             }],
 
@@ -560,9 +559,8 @@ class Offer extends Model
             ['picture', function () {
                 if (count($this->picture) > 10) {
                     $this->addError('Offer can contain maximum 10 pictures, ' . count($this->picture) . ' included');
-                    return false;
+                    return;
                 }
-                return true;
             }, 'when' => function ($model) {
                 /** @var self $model */
                 return is_array($model->picture);
@@ -570,9 +568,7 @@ class Offer extends Model
 
             ['rec', function () {
                 $this->rec = implode(',', $this->rec);
-                return true;
-            }, 'when' => function ($model) {
-                /** @var self $model */
+            }, 'when' => function (self $model) {
                 return is_array($model->rec);
             }],
             ['rec', 'string'],
@@ -580,15 +576,14 @@ class Offer extends Model
             ['param', function() {
                 if (!is_array($this->param)) {
                     $this->addError('param', 'Attribute "param" must be an array');
-                    return false;
+                    return;
                 }
                 foreach ($this->param as $param) {
-                    if (!isset($param['name']) || !isset($param['value'])) {
+                    if (!isset($param['name'], $param['value'])) {
                         $this->addError('param', 'Each param element must contain `name` and `value` keys');
-                        return false;
+                        return;
                     }
                 }
-                return true;
             }, 'when' => function ($model) {
                 return !empty($model);
             }]

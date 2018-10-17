@@ -60,6 +60,9 @@ class YmlOfferBehavior extends Behavior
     /** @var callable */
     public $scope;
 
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         if (!is_callable($this->dataClosure)) {

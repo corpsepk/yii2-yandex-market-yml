@@ -46,6 +46,9 @@ class YandexMarketYml extends Module
     /** @var array */
     public $shopOptions = [];
 
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         parent::init();
@@ -71,6 +74,7 @@ class YandexMarketYml extends Module
         $categoryModel = new $this->categoryModel;
         $shop->categories = $categoryModel->generateCategories();
 
+        $offers = [[]];
         foreach ($this->offerModels as $modelName) {
             /** @var YmlOfferBehavior $model */
             if (is_array($modelName)) {
@@ -79,8 +83,9 @@ class YandexMarketYml extends Module
                 $model = new $modelName;
             }
 
-            $shop->offers = array_merge($shop->offers, $model->generateOffers());
+            $offers[] = $model->generateOffers();
         }
+        $shop->offers = array_merge(...$offers);
 
         if (!$shop->validate()) {
             return $this->createControllerByID('default')->renderPartial('errors', [
