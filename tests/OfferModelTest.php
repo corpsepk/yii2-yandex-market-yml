@@ -265,16 +265,16 @@ class OfferModelTest extends \PHPUnit_Framework_TestCase
         $model = new Offer();
 
         // Необязательный элемент
-        $model->sale_notes = null;
-        $this->assertTrue($model->validate(['sale_notes']));
+        $model->sales_notes = null;
+        $this->assertTrue($model->validate(['sales_notes']));
 
         // Допустимая длина текста в элементе — 50 символов
-        $model->sale_notes = (new Security())->generateRandomString(50);
-        $this->assertTrue($model->validate(['sale_notes']));
+        $model->sales_notes = (new Security())->generateRandomString(50);
+        $this->assertTrue($model->validate(['sales_notes']));
 
         // Допустимая длина текста в элементе — 50 символов
-        $model->sale_notes = (new Security())->generateRandomString(51);
-        $this->assertFalse($model->validate(['sale_notes']));
+        $model->sales_notes = (new Security())->generateRandomString(51);
+        $this->assertFalse($model->validate(['sales_notes']));
     }
 
     // TODO
