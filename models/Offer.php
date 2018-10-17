@@ -484,8 +484,8 @@ class Offer extends Model
     public function rules()
     {
         return [
-            ['id', function () {
-                $this->id = (string)$this->id;
+            ['id', function() {
+                $this->id = (string) $this->id;
                 return true;
             }],
             ['id', 'required'],
@@ -498,7 +498,7 @@ class Offer extends Model
 
             ['categoryId', 'required'],
             ['categoryId', 'number', 'min' => 1],
-            ['categoryId', function () {
+            ['categoryId', function() {
                 if (strlen($this->categoryId) > 18) {
                     return false;
                 };
@@ -524,7 +524,7 @@ class Offer extends Model
             ['oldprice', 'safe'],
             // В <oldprice> указывается старая цена товара, которая должна быть обязательно выше новой цены (<price>).
             // Скидка может показываться в процентах.
-            ['oldprice', 'compare', 'compareAttribute' => 'price', 'operator' => '>', 'type' => 'number', 'when' => function (self $model) {
+            ['oldprice', 'compare', 'compareAttribute' => 'price', 'operator' => '>', 'type' => 'number', 'when' => function(self $model) {
                 return strpos($this->oldprice, '%') === false;
             }],
 
@@ -539,36 +539,36 @@ class Offer extends Model
             [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], 'boolean'],
             // Булево должно быть преобразовано к строке "true"/"false"
             // https://yandex.ru/support/partnermarket/elements/id-type-available.xml
-            [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], function ($attribute) {
+            [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], function($attribute) {
                 $this->$attribute = $this->$attribute ? 'true' : 'false';
-            }, 'when' => function ($model, $attribute) {
+            }, 'when' => function($model, $attribute) {
                 /** @var $model self */
                 return is_bool($model->$attribute);
             }],
 
             ['barcode', 'safe'],
 
-            ['picture', 'string', 'max' => 512, 'when' => function ($model) {
+            ['picture', 'string', 'max' => 512, 'when' => function($model) {
                 /** @var $model self */
                 return is_string($model->picture);
             }],
-            ['picture', 'each', 'rule' => ['string', 'max' => 512], 'when' => function ($model) {
+            ['picture', 'each', 'rule' => ['string', 'max' => 512], 'when' => function($model) {
                 /** @var $model self */
                 return is_array($model->picture);
             }],
-            ['picture', function () {
+            ['picture', function() {
                 if (count($this->picture) > 10) {
-                    $this->addError('Offer can contain maximum 10 pictures, ' . count($this->picture) . ' included');
+                    $this->addError('Offer can contain maximum 10 pictures, '.count($this->picture).' included');
                     return;
                 }
-            }, 'when' => function ($model) {
+            }, 'when' => function($model) {
                 /** @var self $model */
                 return is_array($model->picture);
             }],
 
-            ['rec', function () {
+            ['rec', function() {
                 $this->rec = implode(',', $this->rec);
-            }, 'when' => function (self $model) {
+            }, 'when' => function(self $model) {
                 return is_array($model->rec);
             }],
             ['rec', 'string'],
@@ -584,7 +584,7 @@ class Offer extends Model
                         return;
                     }
                 }
-            }, 'when' => function ($model) {
+            }, 'when' => function($model) {
                 return !empty($model);
             }]
         ];
