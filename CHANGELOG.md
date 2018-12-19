@@ -1,4 +1,6 @@
-## [Unreleased]
+## 0.6 (2018-12-19)
+
+#### Changed
 * Replace constant `YmlOfferBehavior::BATCH_MAX_SIZE` with public property `batchMaxSize` 
 * Render items even if they contain errors ([4c0292d](https://github.com/corpsepk/yii2-yandex-market-yml/commit/4c0292d))
 
