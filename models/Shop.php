@@ -188,18 +188,24 @@ class Shop extends Model
         }
     }
 
+    /**
+     * @return boolean
+     */
     public function validateOffers()
     {
+        $valid = true;
         foreach ($this->offers as $offer) {
             /**
              * @var $offer Offer
              */
-            if (!$offer->validate()) {
-                foreach ($offer->getFirstErrors() as $error) {
-                    Yii::error(Html::encode($error));
-                }
+            if ($offer->validate()) {
+                continue;
             }
+
+            $valid = false;
         }
+
+        return $valid;
     }
 
     /**
@@ -208,6 +214,9 @@ class Shop extends Model
     public function afterValidate()
     {
         parent::afterValidate();
-        $this->validateOffers();
+
+        if (!$this->validateOffers()) {
+            $this->addError('offers', 'Offers has errors');
+        }
     }
 }

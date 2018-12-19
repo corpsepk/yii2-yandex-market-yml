@@ -12,6 +12,7 @@ use yii\base\Module;
 use yii\caching\Cache;
 use yii\base\InvalidConfigException;
 use corpsepk\yml\models\Shop;
+use corpsepk\yml\models\Offer;
 use corpsepk\yml\behaviors\YmlOfferBehavior;
 use corpsepk\yml\behaviors\YmlCategoryBehavior;
 
@@ -78,10 +79,9 @@ class YandexMarketYml extends Module
     }
 
     /**
-     * Build and cache a yandex.market yml
-     * @return string
+     * @return Shop
      */
-    public function buildYml()
+    public function buildShop()
     {
         $shop = new Shop();
         $shop->setAttributes($this->shopOptions);
@@ -107,17 +107,38 @@ class YandexMarketYml extends Module
         }
         $shop->offers = array_merge(...$offers);
 
-        if (!$shop->validate()) {
-            return $this->createControllerByID('default')->renderPartial('errors', [
-                'shop' => $shop,
-            ]);
-        }
+        return $shop;
+    }
 
-        $ymlData = $this->createControllerByID('default')->renderPartial('index', [
+    /**
+     * Build a yandex.market yml
+     * @param Shop $shop
+     * @return string
+     */
+    public function buildYml(Shop $shop)
+    {
+        return $this->createControllerByID('default')->renderPartial('index', [
             'shop' => $shop,
         ]);
-        $this->cacheProvider->set($this->cacheKey, $ymlData, $this->cacheExpire);
+    }
 
-        return $ymlData;
+    /**
+     * @param Shop $shop
+     * @return void
+     */
+    public function logErrors(Shop $shop)
+    {
+        foreach ($shop->getFirstErrors() as $attribute => $error) {
+            Yii::error(Shop::class . "\n$error", __METHOD__);
+        }
+
+        foreach ($shop->offers as $offer) {
+            /**
+             * @var Offer $offer
+             */
+            foreach ($offer->getFirstErrors() as $attribute => $error) {
+                Yii::error(Offer::class . " id: {$offer->id}\n$error", __METHOD__);
+            }
+        }
     }
 }
