@@ -481,6 +481,9 @@ class Offer extends Model
         );
     }
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [

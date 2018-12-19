@@ -54,10 +54,14 @@ class YmlOfferBehavior extends Behavior
 {
     const BATCH_MAX_SIZE = 100;
 
-    /** @var callable */
+    /**
+     * @var callable
+     */
     public $dataClosure;
 
-    /** @var callable */
+    /**
+     * @var callable
+     */
     public $scope;
 
     /**
@@ -70,6 +74,9 @@ class YmlOfferBehavior extends Behavior
         }
     }
 
+    /**
+     * @return array
+     */
     public function generateOffers()
     {
         $result = [];

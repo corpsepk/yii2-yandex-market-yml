@@ -9,11 +9,11 @@ namespace corpsepk\yml;
 
 use Yii;
 use yii\base\Module;
-use yii\base\InvalidConfigException;
 use yii\caching\Cache;
+use yii\base\InvalidConfigException;
 use corpsepk\yml\models\Shop;
-use corpsepk\yml\behaviors\YmlCategoryBehavior;
 use corpsepk\yml\behaviors\YmlOfferBehavior;
+use corpsepk\yml\behaviors\YmlCategoryBehavior;
 
 /**
  * Yii2 module for automatically generating Yandex.Market YML.
@@ -25,25 +25,40 @@ class YandexMarketYml extends Module
 {
     public $controllerNamespace = 'corpsepk\yml\controllers';
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $cacheExpire = 86400;
 
-    /** @var Cache|string */
+    /**
+     * @var Cache|string
+     */
     public $cacheProvider = 'cache';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public $cacheKey = 'YandexMarketYml';
 
-    /** @var boolean Use php's gzip compressing. */
+    /**
+     * Use php's gzip compressing.
+     * @var boolean
+     */
     public $enableGzip = false;
 
-    /** @var YmlCategoryBehavior */
+    /**
+     * @var YmlCategoryBehavior
+     */
     public $categoryModel;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $offerModels;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $shopOptions = [];
 
     /**
@@ -69,14 +84,19 @@ class YandexMarketYml extends Module
     public function buildYml()
     {
         $shop = new Shop();
-        $shop->attributes = $this->shopOptions;
+        $shop->setAttributes($this->shopOptions);
 
+        /**
+         * @var YmlCategoryBehavior $categoryModel
+         */
         $categoryModel = new $this->categoryModel;
         $shop->categories = $categoryModel->generateCategories();
 
         $offers = [[]];
         foreach ($this->offerModels as $modelName) {
-            /** @var YmlOfferBehavior $model */
+            /**
+             * @var YmlOfferBehavior $model
+             */
             if (is_array($modelName)) {
                 $model = new $modelName['class'];
             } else {

@@ -19,7 +19,9 @@ class DefaultController extends Controller
 {
     public function actionIndex()
     {
-        /** @var YandexMarketYml $module */
+        /**
+         * @var YandexMarketYml $module
+         */
         $module = $this->module;
 
         if (!$ymlData = $module->cacheProvider->get($module->cacheKey)) {
@@ -29,11 +31,13 @@ class DefaultController extends Controller
         Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
         $headers = Yii::$app->response->headers;
         $headers->add('Content-Type', 'application/xml');
+
         if ($module->enableGzip) {
             $ymlData = gzencode($ymlData);
             $headers->add('Content-Encoding', 'gzip');
             $headers->add('Content-Length', strlen($ymlData));
         }
+
         return $ymlData;
     }
 }

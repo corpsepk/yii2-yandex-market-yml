@@ -45,12 +45,19 @@ class YmlCategoryBehavior extends Behavior
 {
     const BATCH_MAX_SIZE = 100;
 
-    /** @var callable */
+    /**
+     * @var callable
+     */
     public $dataClosure;
 
-    /** @var callable */
+    /**
+     * @var callable
+     */
     public $scope;
 
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         if (!is_callable($this->dataClosure)) {
@@ -58,12 +65,17 @@ class YmlCategoryBehavior extends Behavior
         }
     }
 
+    /**
+     * @return array
+     */
     public function generateCategories()
     {
         $result = [];
         $n = 0;
 
-        /** @var \yii\db\ActiveRecord $owner */
+        /**
+         * @var \yii\db\ActiveRecord $owner
+         */
         $owner = $this->owner;
         $query = $owner::find();
         if (is_callable($this->scope)) {
