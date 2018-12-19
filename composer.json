@@ -5,8 +5,8 @@
 	"type": "yii2-extension",
 	"license": "MIT",
 	"support": {
-		"source": "https://github.com/corpsepk/corpsepk/yii2-yandex-market-yml",
-        "issues": "https://github.com/corpsepk/corpsepk/yii2-yandex-market-yml/issues"
+		"source": "https://github.com/corpsepk/yii2-yandex-market-yml",
+        "issues": "https://github.com/corpsepk/yii2-yandex-market-yml/issues"
 	},
 	"authors": [
         {
