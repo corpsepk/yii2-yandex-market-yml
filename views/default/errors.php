@@ -35,7 +35,7 @@ foreach ($shop->offers as $offer) {
                 return [
                     'attribute' => $attribute,
                     'format' => 'raw',
-                    'value' => \yii\helpers\VarDumper::dumpAsString($offer->$attribute, 1, 1),
+                    'value' => \yii\helpers\VarDumper::dumpAsString($offer->$attribute, 1, true),
                 ];
             }, array_keys($offer->attributes)),
         ]) ?>
