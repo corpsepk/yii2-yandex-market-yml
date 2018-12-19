@@ -10,13 +10,13 @@ use corpsepk\yml\models\Offer;
 $this->params['breadcrumbs'][] = 'YandexMarketYml errors';
 ?>
 
-    <h1><?= Html::tag('code',  Shop::class) ?> errors:</h1>
+    <h1><?= Html::tag('code', Shop::class) ?> errors:</h1>
 
 <?= Html::errorSummary($shop) ?>
 
     <hr>
 
-    <h1><?= Html::tag('code',  Offer::class) ?> erorrs:</h1>
+    <h1><?= Html::tag('code', Offer::class) ?> erorrs:</h1>
 
 <?php
 foreach ($shop->offers as $offer) {
@@ -31,7 +31,7 @@ foreach ($shop->offers as $offer) {
         <summary>Offer id: <?= $offer->id ?></summary>
         <?= DetailView::widget([
             'model' => $offer,
-            'attributes' => array_map(function ($attribute) use ($offer) {
+            'attributes' => array_map(function($attribute) use ($offer) {
                 return [
                     'attribute' => $attribute,
                     'format' => 'raw',

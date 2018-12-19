@@ -7,9 +7,7 @@
 
 namespace corpsepk\yml\models;
 
-use Yii;
 use yii\base\Model;
-use yii\helpers\Html;
 
 /**
  * @link https://partner.market.yandex.ru/legal/tt/
