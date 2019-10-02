@@ -5,9 +5,9 @@ use corpsepk\yml\models\Offer;
 use yii\base\Security;
 
 /**
- * OfferTestTest
+ * OfferModelTest
  */
-class OfferTest extends \PHPUnit_Framework_TestCase
+class OfferModelTest extends \PHPUnit_Framework_TestCase
 {
     public function testValidateId()
     {
@@ -215,9 +215,9 @@ class OfferTest extends \PHPUnit_Framework_TestCase
     {
         $model = new Offer();
 
-        // Обязательный элемент
+        // Необязательный элемент
         $model->vendor = null;
-        $this->assertFalse($model->validate(['vendor']));
+        $this->assertTrue($model->validate(['vendor']));
 
         $model->vendor = '123abc';
         $this->assertTrue($model->validate(['vendor']));
@@ -226,7 +226,7 @@ class OfferTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($model->validate(['vendor']));
 
         $model->vendor = 123;
-        $this->assertFalse($model->validate(['vendor']));
+        $this->assertTrue($model->validate(['vendor']));
     }
 
     public function testValidateVendorCode()
@@ -265,16 +265,16 @@ class OfferTest extends \PHPUnit_Framework_TestCase
         $model = new Offer();
 
         // Необязательный элемент
-        $model->sale_notes = null;
-        $this->assertTrue($model->validate(['sale_notes']));
+        $model->sales_notes = null;
+        $this->assertTrue($model->validate(['sales_notes']));
 
         // Допустимая длина текста в элементе — 50 символов
-        $model->sale_notes = (new Security())->generateRandomString(50);
-        $this->assertTrue($model->validate(['sale_notes']));
+        $model->sales_notes = (new Security())->generateRandomString(50);
+        $this->assertTrue($model->validate(['sales_notes']));
 
         // Допустимая длина текста в элементе — 50 символов
-        $model->sale_notes = (new Security())->generateRandomString(51);
-        $this->assertFalse($model->validate(['sale_notes']));
+        $model->sales_notes = (new Security())->generateRandomString(51);
+        $this->assertFalse($model->validate(['sales_notes']));
     }
 
     // TODO

@@ -9,11 +9,12 @@ namespace corpsepk\yml;
 
 use Yii;
 use yii\base\Module;
-use yii\base\InvalidConfigException;
 use yii\caching\Cache;
+use yii\base\InvalidConfigException;
 use corpsepk\yml\models\Shop;
-use corpsepk\yml\behaviors\YmlCategoryBehavior;
+use corpsepk\yml\models\Offer;
 use corpsepk\yml\behaviors\YmlOfferBehavior;
+use corpsepk\yml\behaviors\YmlCategoryBehavior;
 
 /**
  * Yii2 module for automatically generating Yandex.Market YML.
@@ -25,25 +26,40 @@ class YandexMarketYml extends Module
 {
     public $controllerNamespace = 'corpsepk\yml\controllers';
 
-    /** @var int */
+    /**
+     * @var int
+     */
     public $cacheExpire = 86400;
 
-    /** @var Cache|string */
+    /**
+     * @var Cache|string
+     */
     public $cacheProvider = 'cache';
 
-    /** @var string */
+    /**
+     * @var string
+     */
     public $cacheKey = 'YandexMarketYml';
 
-    /** @var boolean Use php's gzip compressing. */
+    /**
+     * Use php's gzip compressing.
+     * @var boolean
+     */
     public $enableGzip = false;
 
-    /** @var YmlCategoryBehavior */
+    /**
+     * @var YmlCategoryBehavior
+     */
     public $categoryModel;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $offerModels;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $shopOptions = [];
 
     /**
@@ -63,40 +79,67 @@ class YandexMarketYml extends Module
     }
 
     /**
-     * Build and cache a yandex.market yml
-     * @return string
+     * @return Shop
      */
-    public function buildYml()
+    public function buildShop()
     {
         $shop = new Shop();
-        $shop->attributes = $this->shopOptions;
+        $shop->setAttributes($this->shopOptions);
 
+        /**
+         * @var YmlCategoryBehavior $categoryModel
+         */
         $categoryModel = new $this->categoryModel;
         /** @var $categoryModel YmlCategoryBehavior */
         $shop->categories = $categoryModel->generateCategories();
 
+        $offers = [[]];
         foreach ($this->offerModels as $modelName) {
-            /** @var YmlOfferBehavior $model */
+            /**
+             * @var YmlOfferBehavior $model
+             */
             if (is_array($modelName)) {
                 $model = new $modelName['class'];
             } else {
                 $model = new $modelName;
             }
 
-            $shop->offers = array_merge($shop->offers, $model->generateOffers());
+            $offers[] = $model->generateOffers();
         }
+        $shop->offers = array_merge(...$offers);
 
-        if (!$shop->validate()) {
-            return $this->createControllerByID('default')->renderPartial('errors', [
-                'shop' => $shop,
-            ]);
-        }
+        return $shop;
+    }
 
-        $ymlData = $this->createControllerByID('default')->renderPartial('index', [
+    /**
+     * Build a yandex.market yml
+     * @param Shop $shop
+     * @return string
+     */
+    public function buildYml(Shop $shop)
+    {
+        return $this->createControllerByID('default')->renderPartial('index', [
             'shop' => $shop,
         ]);
-        $this->cacheProvider->set($this->cacheKey, $ymlData, $this->cacheExpire);
+    }
 
-        return $ymlData;
+    /**
+     * @param Shop $shop
+     * @return void
+     */
+    public function logErrors(Shop $shop)
+    {
+        foreach ($shop->getFirstErrors() as $attribute => $error) {
+            Yii::error(Shop::class . "\n$error", __METHOD__);
+        }
+
+        foreach ($shop->offers as $offer) {
+            /**
+             * @var Offer $offer
+             */
+            foreach ($offer->getFirstErrors() as $attribute => $error) {
+                Yii::error(Offer::class . " id: {$offer->id}\n$error", __METHOD__);
+            }
+        }
     }
 }
