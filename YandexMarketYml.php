@@ -90,6 +90,7 @@ class YandexMarketYml extends Module
          * @var YmlCategoryBehavior $categoryModel
          */
         $categoryModel = new $this->categoryModel;
+        /** @var $categoryModel YmlCategoryBehavior */
         $shop->categories = $categoryModel->generateCategories();
 
         $offers = [[]];
