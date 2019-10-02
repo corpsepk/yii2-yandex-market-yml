@@ -8,6 +8,7 @@
 namespace corpsepk\yml\behaviors;
 
 use yii\base\Behavior;
+use yii\db\ActiveRecord;
 use yii\base\InvalidConfigException;
 
 /**
@@ -51,6 +52,9 @@ class YmlCategoryBehavior extends Behavior
     /** @var callable */
     public $scope;
 
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         if (!is_callable($this->dataClosure)) {
@@ -58,12 +62,15 @@ class YmlCategoryBehavior extends Behavior
         }
     }
 
+    /**
+     * @return array
+     */
     public function generateCategories()
     {
         $result = [];
         $n = 0;
 
-        /** @var \yii\db\ActiveRecord $owner */
+        /** @var ActiveRecord $owner */
         $owner = $this->owner;
         $query = $owner::find();
         if (is_callable($this->scope)) {

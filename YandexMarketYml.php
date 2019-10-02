@@ -46,6 +46,9 @@ class YandexMarketYml extends Module
     /** @var array */
     public $shopOptions = [];
 
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         parent::init();
@@ -69,6 +72,7 @@ class YandexMarketYml extends Module
         $shop->attributes = $this->shopOptions;
 
         $categoryModel = new $this->categoryModel;
+        /** @var $categoryModel YmlCategoryBehavior */
         $shop->categories = $categoryModel->generateCategories();
 
         foreach ($this->offerModels as $modelName) {
