@@ -67,9 +67,10 @@ $writer->endElement();
 $writer->startElement('offers');
 
 foreach ($shop->offers as $offer) {
-    /**
-     * @var $offer \corpsepk\yml\models\Offer
-     */
+    if ($offer->errors) {
+        continue;
+    }
+
     $writer->startElement('offer');
 
     foreach ($offer->offerElementAttributes as $attribute) {
