@@ -95,7 +95,7 @@ class Shop extends Model
     /** @var true|null */
     public $adult;
 
-    /** @var array */
+    /** @var Offer[] */
     public $offers = [];
 
     /**
@@ -171,7 +171,6 @@ class Shop extends Model
     public function validateOffers()
     {
         foreach ($this->offers as $offer) {
-            /** @var $offer Offer */
             if (!$offer->validate()) {
                 foreach ($offer->getFirstErrors() as $error) {
                     Yii::error(Html::encode($error));
