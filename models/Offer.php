@@ -255,7 +255,7 @@ class Offer extends Model
 
     /**
      * Производитель.
-     * Обязательный элемент.
+     * Необязательный элемент.
      *
      * @var string
      */
@@ -287,12 +287,17 @@ class Offer extends Model
 
     /**
      * Элемент используется для отражения информации о минимальной сумме заказа, минимальной партии товара или необходимости предоплаты, а также для описания акций, скидок и распродаж.
-     * Допустимая длина текста в элементе — 50 символов.
+     * Допустимая длина текста в элементе — не более 50 символов.
      * Необязательный элемент.
+     *
+     * Элемент обязателен, если у вас есть ограничения при заказе товара
+     * (например, минимальная сумма заказа, минимальное количество товаров или
+     * необходимость предоплаты).
+     * @link https://yandex.ru/support/partnermarket/elements/sales_notes.html
      *
      * @var string|null
      */
-    public $sale_notes;
+    public $sales_notes;
 
     /**
      * Элемент предназначен для отметки товаров, имеющих официальную гарантию производителя.
@@ -476,11 +481,14 @@ class Offer extends Model
         );
     }
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
-            ['id', function () {
-                $this->id = (string)$this->id;
+            ['id', function() {
+                $this->id = (string) $this->id;
                 return true;
             }],
             ['id', 'required'],
@@ -493,16 +501,13 @@ class Offer extends Model
 
             ['categoryId', 'required'],
             ['categoryId', 'number', 'min' => 1],
-            ['categoryId', function () {
+            ['categoryId', function() {
                 if (strlen($this->categoryId) > 18) {
                     return false;
                 };
 
                 return true;
-            }, 'message' => 'Category id must be less than 18 sybols'],
-
-            ['vendor', 'required'],
-            ['vendor', 'string'],
+            }, 'message' => 'Category id must be less than 18 symbols'],
 
             // TODO Add `expiry` date validator
             // TODO Add `weight` number validator
@@ -510,7 +515,7 @@ class Offer extends Model
             [
                 [
                     'type', 'bid', 'cbid', 'price', 'categoryId',
-                    'typePrefix', 'name', 'vendorCode', 'model',
+                    'typePrefix', 'name', 'vendor', 'vendorCode', 'model',
                     'description', 'manufacturer_warranty',
                     'seller_warranty', 'country_of_origin',
                     'expiry', 'weight', 'dimensions',
@@ -522,14 +527,13 @@ class Offer extends Model
             ['oldprice', 'safe'],
             // В <oldprice> указывается старая цена товара, которая должна быть обязательно выше новой цены (<price>).
             // Скидка может показываться в процентах.
-            ['oldprice', 'compare', 'compareAttribute' => 'price', 'operator' => '>', 'type' => 'number', 'when' => function ($model) {
-                /** @var $model self */
+            ['oldprice', 'compare', 'compareAttribute' => 'price', 'operator' => '>', 'type' => 'number', 'when' => function(self $model) {
                 return strpos($this->oldprice, '%') === false;
             }],
 
             ['local_delivery_cost', 'number'],
 
-            ['sale_notes', 'string', 'max' => 50],
+            ['sales_notes', 'string', 'max' => 50],
 
             // TODO Not implemented yet
 //            ['age', 'integer'],
@@ -538,39 +542,36 @@ class Offer extends Model
             [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], 'boolean'],
             // Булево должно быть преобразовано к строке "true"/"false"
             // https://yandex.ru/support/partnermarket/elements/id-type-available.xml
-            [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], function ($attribute) {
+            [['available', 'store', 'pickup', 'delivery', 'downloadable', 'adult', 'cpa'], function($attribute) {
                 $this->$attribute = $this->$attribute ? 'true' : 'false';
-            }, 'when' => function ($model, $attribute) {
+            }, 'when' => function($model, $attribute) {
                 /** @var $model self */
                 return is_bool($model->$attribute);
             }],
 
             ['barcode', 'safe'],
 
-            ['picture', 'string', 'max' => 512, 'when' => function ($model) {
+            ['picture', 'string', 'max' => 512, 'when' => function($model) {
                 /** @var $model self */
                 return is_string($model->picture);
             }],
-            ['picture', 'each', 'rule' => ['string', 'max' => 512], 'when' => function ($model) {
+            ['picture', 'each', 'rule' => ['string', 'max' => 512], 'when' => function($model) {
                 /** @var $model self */
                 return is_array($model->picture);
             }],
-            ['picture', function () {
+            ['picture', function() {
                 if (count($this->picture) > 10) {
-                    $this->addError('Offer can contain maximum 10 pictures, ' . count($this->picture) . ' included');
-                    return false;
+                    $this->addError('Offer can contain maximum 10 pictures, '.count($this->picture).' included');
+                    return;
                 }
-                return true;
-            }, 'when' => function ($model) {
+            }, 'when' => function($model) {
                 /** @var self $model */
                 return is_array($model->picture);
             }],
 
-            ['rec', function () {
+            ['rec', function() {
                 $this->rec = implode(',', $this->rec);
-                return true;
-            }, 'when' => function ($model) {
-                /** @var self $model */
+            }, 'when' => function(self $model) {
                 return is_array($model->rec);
             }],
             ['rec', 'string'],
@@ -578,16 +579,15 @@ class Offer extends Model
             ['param', function() {
                 if (!is_array($this->param)) {
                     $this->addError('param', 'Attribute "param" must be an array');
-                    return false;
+                    return;
                 }
                 foreach ($this->param as $param) {
-                    if (!isset($param['name']) || !isset($param['value'])) {
+                    if (!isset($param['name'], $param['value'])) {
                         $this->addError('param', 'Each param element must contain `name` and `value` keys');
-                        return false;
+                        return;
                     }
                 }
-                return true;
-            }, 'when' => function ($model) {
+            }, 'when' => function($model) {
                 return !empty($model);
             }]
         ];

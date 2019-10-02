@@ -7,9 +7,7 @@
 
 namespace corpsepk\yml\models;
 
-use Yii;
 use yii\base\Model;
-use yii\helpers\Html;
 
 /**
  * @link https://partner.market.yandex.ru/legal/tt/
@@ -43,7 +41,9 @@ class Shop extends Model
      */
     public $url;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     public $phone;
 
     /**
@@ -71,31 +71,49 @@ class Shop extends Model
      */
     public $email;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $currencies;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $categories;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     public $store;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     public $pickup;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     public $delivery;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     public $deliveryIncluded;
 
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     public $local_delivery_cost;
 
-    /** @var true|null */
+    /**
+     * @var true|null
+     */
     public $adult;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $offers = [];
 
     /**
@@ -110,7 +128,9 @@ class Shop extends Model
      */
     public $cpa;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     public $optionalAttributes = [
         'phone', 'platform', 'version', 'agency', 'email',
         'store', 'pickup', 'delivery', 'deliveryIncluded',
@@ -149,35 +169,41 @@ class Shop extends Model
     /**
      * @param string $attribute
      * @param array $params
-     * @return bool
+     * @return void
      */
     public function validateCurrencies($attribute, $params)
     {
         if (!is_array($this->currencies)) {
             $this->addError('currencies', 'Currencies must be an array');
-            return false;
+            return;
         }
 
         foreach ($this->currencies as $currency) {
-            if (!isset($currency['id']) || !isset($currency['rate'])) {
+            if (!isset($currency['id'], $currency['rate'])) {
                 $this->addError('currencies', 'Currency must contain "id" and "rate" keys');
-                return false;
+                return;
             }
         }
-
-        return true;
     }
 
+    /**
+     * @return boolean
+     */
     public function validateOffers()
     {
+        $valid = true;
         foreach ($this->offers as $offer) {
-            /** @var $offer Offer */
-            if (!$offer->validate()) {
-                foreach ($offer->getFirstErrors() as $error) {
-                    Yii::error(Html::encode($error));
-                }
+            /**
+             * @var $offer Offer
+             */
+            if ($offer->validate()) {
+                continue;
             }
-        };
+
+            $valid = false;
+        }
+
+        return $valid;
     }
 
     /**
@@ -186,6 +212,9 @@ class Shop extends Model
     public function afterValidate()
     {
         parent::afterValidate();
-        $this->validateOffers();
+
+        if (!$this->validateOffers()) {
+            $this->addError('offers', 'Offers has errors');
+        }
     }
 }

@@ -46,10 +46,14 @@ class YmlCategoryBehavior extends Behavior
 {
     const BATCH_MAX_SIZE = 100;
 
-    /** @var callable */
+    /**
+     * @var callable
+     */
     public $dataClosure;
 
-    /** @var callable */
+    /**
+     * @var callable
+     */
     public $scope;
 
     /**
@@ -69,6 +73,7 @@ class YmlCategoryBehavior extends Behavior
     {
         $result = [];
         $n = 0;
+
 
         /** @var ActiveRecord $owner */
         $owner = $this->owner;

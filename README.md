@@ -2,8 +2,10 @@ Yandex.Market YML Module for Yii2
 ==========================
 Yii2 module for automatically generation [Yandex.Market YML](https://yandex.ru/support/webmaster/goods-prices/technical-requirements.xml).
 
-[![Build Status](https://img.shields.io/travis/corpsepk/yii2-yandex-market-yml/master.svg?style=flat)](https://travis-ci.org/corpsepk/yii2-yandex-market-yml)
-[![Code Coverage](https://scrutinizer-ci.com/g/corpsepk/yii2-yandex-market-yml/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/corpsepk/yii2-yandex-market-yml/?branch=master)
+[![Latest Version](https://img.shields.io/github/tag/corpsepk/yii2-yandex-market-yml.svg?style=flat-square&label=release)](https://github.com/corpsepk/yii2-yandex-market-yml/tags)
+[![Build Status](https://img.shields.io/travis/corpsepk/yii2-yandex-market-yml/master.svg?style=flat-square)](https://travis-ci.org/corpsepk/yii2-yandex-market-yml)
+[![Quality Score](https://img.shields.io/scrutinizer/g/corpsepk/yii2-yandex-market-yml.svg?style=flat-square)](https://scrutinizer-ci.com/g/corpsepk/yii2-yandex-market-yml)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg?style=flat-square)](https://php.net/)
 
 Installation
 ------------
@@ -12,13 +14,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 * Either run
 
 ```
-php composer.phar require --prefer-dist "corpsepk/yii2-yandex-market-yml" "~0.2"
+php composer.phar require --prefer-dist "corpsepk/yii2-yandex-market-yml" "~0.6"
 ```
 
 or add
 
 ```json
-"corpsepk/yii2-yandex-market-yml" : "~0.2"
+"corpsepk/yii2-yandex-market-yml" : "~0.6"
 ```
 
 to the `require` section of your application's `composer.json` file.
@@ -68,7 +70,7 @@ Add a new rule for `urlManager` of your application's configuration file, for ex
 ```php
 'urlManager' => [
     'rules' => [
-        ['pattern' => 'yandex-market', 'route' => 'yml/default/index', 'suffix' => '.yml'],
+        ['pattern' => 'yandex-market', 'route' => 'YandexMarketYml/default/index', 'suffix' => '.yml'],
     ],
 ],
 ```
