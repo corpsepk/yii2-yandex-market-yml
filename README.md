@@ -148,6 +148,12 @@ public function behaviors()
 ```
 
 
+Howto
+------------
+
+[Use console command to build yml](https://github.com/corpsepk/yii2-yandex-market-yml/blob/master/docs/console-command-basic.md)
+
+
 Useful links
 ------------
 Yandex XML validator - https://webmaster.yandex.ru/tools/xml-validator/
