@@ -79,6 +79,26 @@ foreach ($shop->offers as $offer) {
         }
     }
 
+
+    foreach ($offer->customElements as $attribute) {
+        if (!is_array($attribute)) {
+            continue;
+        }
+        foreach ($attribute as $attrName => $attrValue) {
+            if (is_array($attrValue)) {
+                $writer->startElement($attrName);
+                foreach ($attrValue as $name => $value) {
+                    $writer->writeElement($name, Html::encode($value));
+                }
+                $writer->endElement();
+            } else {
+                $writer->startElement($attrName);
+                $writer->writeRaw($attrValue);
+                $writer->endElement();
+            }
+        }
+    }
+
     foreach ($offer->getOfferElements() as $attribute) {
         if (empty($offer->$attribute)) {
             continue;

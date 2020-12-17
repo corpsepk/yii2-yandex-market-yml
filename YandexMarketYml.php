@@ -7,6 +7,7 @@
 
 namespace corpsepk\yml;
 
+use corpsepk\yml\interfaces\YandexMarketOfferInterface;
 use Yii;
 use yii\base\Module;
 use yii\caching\Cache;
@@ -118,6 +119,14 @@ class YandexMarketYml extends Module
      */
     public function buildYml(Shop $shop)
     {
+        if ($shop->dataProvider) {
+            foreach ($shop->dataProvider->getModels() as $model) {
+                if (!($model instanceof YandexMarketOfferInterface)) {
+                    throw new InvalidConfigException("A model ". get_class($model) ." must implements " . YandexMarketOfferInterface::class);
+                }
+                $shop->offers[] = $model->generateOffer();
+            }
+        }
         return $this->createControllerByID('default')->renderPartial('index', [
             'shop' => $shop,
         ]);

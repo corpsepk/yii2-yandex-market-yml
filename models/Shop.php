@@ -9,6 +9,7 @@ namespace corpsepk\yml\models;
 
 use Yii;
 use yii\base\Model;
+use yii\data\BaseDataProvider;
 use yii\helpers\Html;
 
 /**
@@ -137,6 +138,9 @@ class Shop extends Model
         'store', 'pickup', 'delivery', 'deliveryIncluded',
         'local_delivery_cost', 'adult'
     ];
+
+    /** @var BaseDataProvider */
+    public $dataProvider;
 
     /**
      * @return array
