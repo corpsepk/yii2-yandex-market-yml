@@ -468,6 +468,12 @@ class Offer extends Model
     public $offerElementAttributes = [
         'id', 'type', 'available', 'bid', 'cbid'
     ];
+    
+    /**
+     * Кастомные (дополнительные) элементы <offer>
+     * @var array
+     */
+    public $customElements = [];
 
     /**
      * @return array
@@ -477,7 +483,7 @@ class Offer extends Model
         return array_diff(
             array_keys($this->attributes),
             $this->offerElementAttributes,
-            ['param', 'offerElementAttributes']
+            ['param', 'offerElementAttributes', 'customElements']
         );
     }
 
