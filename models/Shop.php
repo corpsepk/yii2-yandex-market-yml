@@ -184,7 +184,7 @@ class Shop extends Model
         }
 
         foreach ($this->currencies as $currency) {
-            if (!isset($currency['id']) || !isset($currency['rate'])) {
+            if (!isset($currency['id'], $currency['rate'])) {
                 $this->addError('currencies', 'Currency must contain "id" and "rate" keys');
                 return false;
             }
@@ -201,7 +201,7 @@ class Shop extends Model
                     Yii::error(Html::encode($error));
                 }
             }
-        };
+        }
     }
 
     /**

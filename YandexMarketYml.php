@@ -7,7 +7,6 @@
 
 namespace corpsepk\yml;
 
-use corpsepk\yml\interfaces\YandexMarketOfferInterface;
 use Yii;
 use yii\base\Module;
 use yii\caching\Cache;
@@ -16,6 +15,7 @@ use corpsepk\yml\models\Shop;
 use corpsepk\yml\models\Offer;
 use corpsepk\yml\behaviors\YmlOfferBehavior;
 use corpsepk\yml\behaviors\YmlCategoryBehavior;
+use corpsepk\yml\interfaces\YandexMarketOfferInterface;
 
 /**
  * Yii2 module for automatically generating Yandex.Market YML.
@@ -91,7 +91,6 @@ class YandexMarketYml extends Module
          * @var YmlCategoryBehavior $categoryModel
          */
         $categoryModel = new $this->categoryModel;
-        /** @var $categoryModel YmlCategoryBehavior */
         $shop->categories = $categoryModel->generateCategories();
 
         $offers = [[]];
@@ -116,6 +115,7 @@ class YandexMarketYml extends Module
      * Build a yandex.market yml
      * @param Shop $shop
      * @return string
+     * @throws InvalidConfigException
      */
     public function buildYml(Shop $shop)
     {
@@ -127,6 +127,7 @@ class YandexMarketYml extends Module
                 $shop->offers[] = $model->generateOffer();
             }
         }
+
         return $this->createControllerByID('default')->renderPartial('index', [
             'shop' => $shop,
         ]);
@@ -139,15 +140,12 @@ class YandexMarketYml extends Module
     public function logErrors(Shop $shop)
     {
         foreach ($shop->getFirstErrors() as $attribute => $error) {
-            Yii::error(Shop::class . "\n$error", __METHOD__);
+            Yii::error([Shop::class, $error, __METHOD__]);
         }
 
         foreach ($shop->offers as $offer) {
-            /**
-             * @var Offer $offer
-             */
             foreach ($offer->getFirstErrors() as $attribute => $error) {
-                Yii::error(Offer::class . " id: {$offer->id}\n$error", __METHOD__);
+                Yii::error([Offer::class, "id: {$offer->id}", $error, __METHOD__]);
             }
         }
     }

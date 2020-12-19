@@ -9,6 +9,7 @@
 
 use yii\helpers\Html;
 
+// TODO add `ext-xmlwriter` requirement to composer.json
 $writer = new XMLWriter();
 $writer->openUri('php://output');
 
