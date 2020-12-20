@@ -15,6 +15,7 @@ use corpsepk\yml\models\Shop;
 use corpsepk\yml\models\Offer;
 use corpsepk\yml\behaviors\YmlOfferBehavior;
 use corpsepk\yml\behaviors\YmlCategoryBehavior;
+use corpsepk\yml\controllers\DefaultController;
 use corpsepk\yml\interfaces\YandexMarketOfferInterface;
 
 /**
@@ -81,6 +82,7 @@ class YandexMarketYml extends Module
 
     /**
      * @return Shop
+     * @throws InvalidConfigException
      */
     public function buildShop()
     {
@@ -108,6 +110,15 @@ class YandexMarketYml extends Module
         }
         $shop->offers = array_merge(...$offers);
 
+        if ($shop->dataProvider) {
+            foreach ($shop->dataProvider->getModels() as $model) {
+                if (!($model instanceof YandexMarketOfferInterface)) {
+                    throw new InvalidConfigException("A model " . get_class($model) . " must implements " . YandexMarketOfferInterface::class);
+                }
+                $shop->offers[] = $model->generateOffer();
+            }
+        }
+
         return $shop;
     }
 
@@ -115,22 +126,13 @@ class YandexMarketYml extends Module
      * Build a yandex.market yml
      * @param Shop $shop
      * @return string
-     * @throws InvalidConfigException
      */
     public function buildYml(Shop $shop)
     {
-        if ($shop->dataProvider) {
-            foreach ($shop->dataProvider->getModels() as $model) {
-                if (!($model instanceof YandexMarketOfferInterface)) {
-                    throw new InvalidConfigException("A model ". get_class($model) ." must implements " . YandexMarketOfferInterface::class);
-                }
-                $shop->offers[] = $model->generateOffer();
-            }
-        }
+        /** @var $controller DefaultController */
+        $controller = $this->createControllerByID('default');
 
-        return $this->createControllerByID('default')->renderPartial('index', [
-            'shop' => $shop,
-        ]);
+        return $controller->renderPartial('index', ['shop' => $shop]);
     }
 
     /**
