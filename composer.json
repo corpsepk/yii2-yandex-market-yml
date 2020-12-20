@@ -26,5 +26,20 @@
 		"psr-4": {
             "corpsepk\\yml\\": ""
         }
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	],
+	"config": {
+		"process-timeout": 1800,
+		"fxp-asset": {
+			"installer-paths": {
+				"npm-asset-library": "vendor/npm-asset",
+				"bower-asset-library": "vendor/bower-asset"
+			}
+		}
 	}
 }

@@ -1,0 +1,12 @@
+/.idea
+/.git
+/.dockerignore
+/.editorconfig
+/.env.example
+/.gitattributes
+/.github
+/.gitignore
+/.travis.yml
+/composer.lock
+/tests/runtime/*
+/vendor
