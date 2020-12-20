@@ -24,7 +24,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-            "corpsepk\\yml\\": ""
+            "corpsepk\\yml\\": "src"
         }
 	},
 	"repositories": [
