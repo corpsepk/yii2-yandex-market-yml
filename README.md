@@ -76,8 +76,10 @@ Add a new rule for `urlManager` of your application's configuration file, for ex
 ```
 
 
-Configure models
+Configure `Category` model
 ------------
+https://yandex.ru/support/partnermarket/elements/categories.html
+
 Add behavior in the AR category model, for example:
 
 ```php
@@ -104,6 +106,9 @@ public function behaviors()
     ];
 }
 ```
+
+Configure `Offer` models
+------------
 
 Add behavior in the AR models, for example:
 
