@@ -147,6 +147,20 @@ public function behaviors()
 }
 ```
 
+Testing
+------------
+
+```bash
+docker-compose -f tests/docker-compose.yml run --rm php56 phpunit
+```
+
+or 
+
+```bash
+docker-compose -f tests/docker-compose.yml up --build -d
+docker exec -it tests_php56_1 sh
+phpunit
+```
 
 Howto
 ------------

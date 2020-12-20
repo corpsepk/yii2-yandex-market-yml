@@ -1,0 +1,20 @@
+version: "3.5"
+services:
+
+  # https://docs.docker.com/samples/library/php/
+  php56:
+    build:
+      context: ..
+      dockerfile: tests/docker/php/5.6/Dockerfile
+    volumes:
+    - ../:/code
+    - ./runtime/.composer56:/root/.composer
+    dns: &php_dns
+      - 8.8.8.8
+      - 4.4.4.4
+    networks:
+      net: {}
+
+networks:
+  net:
+    name: yii2_yandex_market_yml_net
