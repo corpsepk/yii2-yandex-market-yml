@@ -8,6 +8,7 @@
 namespace corpsepk\yml\behaviors;
 
 use yii\base\Behavior;
+use yii\db\ActiveRecord;
 use yii\base\InvalidConfigException;
 
 /**
@@ -81,7 +82,7 @@ class YmlOfferBehavior extends Behavior
     {
         $result = [];
 
-        /** @var \yii\db\ActiveRecord $owner */
+        /** @var ActiveRecord $owner */
         $owner = $this->owner;
         $query = $owner::find();
         if (is_callable($this->scope)) {

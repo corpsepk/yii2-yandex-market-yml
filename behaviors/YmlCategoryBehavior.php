@@ -74,7 +74,6 @@ class YmlCategoryBehavior extends Behavior
         $result = [];
         $n = 0;
 
-
         /** @var ActiveRecord $owner */
         $owner = $this->owner;
         $query = $owner::find();
