@@ -144,6 +144,11 @@ public function behaviors()
                     'name' => $model->name,
                     'vendor' => $model->brand ? $model->brand->name : null,
                     'description' => $model->description,
+                    'customElements' => [
+                        [
+                            'outlets' => '<outlet id="1" instock="30" />'
+                        ]
+                    ],
                 ]);
             }
         ],

@@ -8,6 +8,7 @@
  */
 
 use yii\helpers\Html;
+use corpsepk\yml\helpers\XMLWriterHelper;
 
 // TODO add `ext-xmlwriter` requirement to composer.json
 $writer = new XMLWriter();
@@ -67,63 +68,14 @@ $writer->endElement();
 // <offers>
 $writer->startElement('offers');
 
+$helper = new XMLWriterHelper();
+
 foreach ($shop->offers as $offer) {
     if ($offer->errors) {
         continue;
     }
 
-    $writer->startElement('offer');
-
-    foreach ($offer->offerElementAttributes as $attribute) {
-        if (!empty($offer->$attribute)) {
-            $writer->writeAttribute($attribute, Html::encode($offer->$attribute));
-        }
-    }
-
-
-    foreach ($offer->customElements as $attribute) {
-        if (!is_array($attribute)) {
-            continue;
-        }
-        foreach ($attribute as $attrName => $attrValue) {
-            if (is_array($attrValue)) {
-                $writer->startElement($attrName);
-                foreach ($attrValue as $name => $value) {
-                    $writer->writeElement($name, Html::encode($value));
-                }
-                $writer->endElement();
-            } else {
-                $writer->startElement($attrName);
-                $writer->writeRaw($attrValue);
-                $writer->endElement();
-            }
-        }
-    }
-
-    foreach ($offer->getOfferElements() as $attribute) {
-        if (empty($offer->$attribute)) {
-            continue;
-        }
-
-        if (is_array($offer->$attribute)) {
-            foreach ($offer->$attribute as $value) {
-                $writer->writeElement($attribute, Html::encode($value));
-            }
-        } else {
-            $writer->writeElement($attribute, Html::encode($offer->$attribute));
-        }
-    }
-
-    if (is_array($offer->param)) {
-        foreach ($offer->param as $param) {
-            $writer->startElement('param');
-            $writer->writeAttribute('name', $param['name']);
-            $writer->text($param['value']);
-            $writer->endElement();
-        }
-    }
-
-    $writer->endElement();
+    $writer->writeRaw($helper->renderOffer($offer));
 }
 $writer->endElement();
 
