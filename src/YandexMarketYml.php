@@ -44,6 +44,7 @@ class YandexMarketYml extends Module
     public $cacheKey = 'YandexMarketYml';
 
     /**
+     * todo remove
      * Use php's gzip compressing.
      * @var boolean
      */

@@ -44,7 +44,6 @@ Add a new module in `modules` section of your application's configuration file, 
 'modules' => [
     'YandexMarketYml' => [
         'class' => 'corpsepk\yml\YandexMarketYml',
-        'enableGzip' => true, // default is false
         'cacheExpire' => 1, // 1 second. Default is 24 hours
         'categoryModel' => 'app\models\Category',
         'shopOptions' => [
