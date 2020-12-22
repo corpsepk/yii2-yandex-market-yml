@@ -1,3 +1,13 @@
+## 0.7 (2020-12-22)
+
+#### Added
+* Offer->customElements
+
+#### Changed
+* Switch Travis-ci on GitHub actions
+
+
+
 ## 0.6 (2018-12-19)
 
 #### Changed
