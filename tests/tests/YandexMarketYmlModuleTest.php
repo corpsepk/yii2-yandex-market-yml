@@ -2,16 +2,17 @@
 
 namespace tests;
 
-use Yii;
-use tests\models\Category;
-use corpsepk\yml\models\Shop;
 use corpsepk\yml\models\Offer;
+use corpsepk\yml\models\Shop;
 use corpsepk\yml\YandexMarketYml;
+use PHPUnit\Framework\TestCase;
+use tests\models\Category;
+use Yii;
 
 /**
  * BuildYmlTest
  */
-class YandexMarketYmlModuleTest extends \PHPUnit_Framework_TestCase
+class YandexMarketYmlModuleTest extends TestCase
 {
     public function testBuildYml()
     {
@@ -65,8 +66,7 @@ class YandexMarketYmlModuleTest extends \PHPUnit_Framework_TestCase
                 ]
             ]),
         ]);
-        $expected = file_get_contents(__DIR__.'/data/yml.bin');
-        // TODO mock date function, and remove this
+        $expected = file_get_contents(__DIR__.'/../data/yml.bin');
         $actual = preg_replace('/yml_catalog date="(.*?)"/', 'yml_catalog date="2017-01-01 10:00"', $yml);
 
         $this->assertEquals($expected, $actual);

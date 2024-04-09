@@ -2,12 +2,13 @@
 namespace tests;
 
 use corpsepk\yml\models\Offer;
+use PHPUnit\Framework\TestCase;
 use yii\base\Security;
 
 /**
  * OfferModelTest
  */
-class OfferModelTest extends \PHPUnit_Framework_TestCase
+class OfferModelTest extends TestCase
 {
     public function testValidateId()
     {
@@ -99,7 +100,7 @@ class OfferModelTest extends \PHPUnit_Framework_TestCase
     {
         $model = new Offer();
 
-        foreach (Offer::CURRENCY_AVAILABLE as $currency)
+        foreach (['RUR', 'RUB', 'UAH', 'BYN', 'KZT', 'USD', 'EUR'] as $currency)
         {
             $model->currencyId = $currency;
             $this->assertTrue($model->validate(['currencyId']));
@@ -130,10 +131,6 @@ class OfferModelTest extends \PHPUnit_Framework_TestCase
 
         // Идентификатор категории товара (целое число не более 18 знаков)
         $model->categoryId = (new Security())->generateRandomKey(19);
-        $this->assertFalse($model->validate(['categoryId']));
-
-        // Элемент offer может содержать только один элемент categoryId
-        $model->categoryId = [1, 2, 3];
         $this->assertFalse($model->validate(['categoryId']));
 
         // Идентификатор категории товара (целое число не более 18 знаков)

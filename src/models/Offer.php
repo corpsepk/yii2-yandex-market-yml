@@ -6,19 +6,19 @@
  */
 namespace corpsepk\yml\models;
 
+use corpsepk\yml\dto\Condition;
 use yii\base\Model;
 
 /**
- * @link https://partner.market.yandex.ru/legal/tt
+ * @link https://yandex.ru/support/products/offers.html
  * @package corpsepk\yml
  */
 class Offer extends Model
 {
     /**
      * @link https://yandex.ru/support/partnermarket/currencies.xml
-     * @var array
      */
-    const CURRENCY_AVAILABLE = ['RUR', 'RUB', 'UAH', 'BYN', 'KZT', 'USD', 'EUR'];
+    private const CURRENCY_AVAILABLE = ['RUR', 'RUB', 'UAH', 'BYN', 'KZT', 'USD', 'EUR'];
 
     /**
      * В атрибуте id указывается идентификатор товарного предложения.
@@ -30,10 +30,8 @@ class Offer extends Model
      * Если у двух и более товарных предложений указать одинаковые атрибуты id,
      * то идентификатор будет присвоен только первому из этих предложений.
      * Для остальных будет выводиться предупреждающее сообщение об отсутствии идентификатора.
-     *
-     * @var string
      */
-    public $id;
+    public string|null $id = null;
 
     /**
      * В атрибуте type указывается тип описания —
@@ -48,9 +46,8 @@ class Offer extends Model
      *
      * Указание типа описания обязательно за исключением упрощенного описания.
      * Товарные предложения, описанные не в соответствии со своим типом, могут не приниматься к публикации.
-     * @var string
      */
-    public $type;
+    public string|null $type = null;
 
     /**
      * В атрибуте available указывается статус доступности товара:
@@ -61,31 +58,25 @@ class Offer extends Model
      * ориентировочный срок поставки которых оговаривается с покупателем во время заказа).
      * «true» — товарное предложение в наличии.
      * Магазин готов сразу договариваться с покупателем о доставке/покупке товара.
-     *
-     * @var bool
      */
-    public $available;
+    public bool|null $available = null;
 
     /**
      * В атрибуте bid указывается основная ставка товарного предложения,
-     * @var string
      */
-    public $bid;
+    public string|null $bid = null;
 
     /**
      * В атрибуте cbid — ставка для карточки модели.
-     * @var string
      */
-    public $cbid;
+    public string|null $cbid = null;
 
     /**
      * URL страницы товара.
      * Максимальная длина URL — 512 символов.
      * Необязательный элемент для магазинов-салонов.
-     *
-     * @var string|null
      */
-    public $url;
+    public string|null $url = null;
 
     /**
      * Цена, по которой данный товар можно приобрести.
@@ -121,10 +112,8 @@ class Offer extends Model
      * Тумбы;
      * Шкафы.
      * Пример: <price from=true>2000</price>
-     *
-     * @var string
      */
-    public $price;
+    public int|null $price = null;
 
     /**
      * Параметр необходим для показа скидки на товар.
@@ -135,30 +124,24 @@ class Offer extends Model
      * Процент рассчитывается автоматически на основе разницы между <oldprice> и <price>,
      * округляется до целого числа по общематематическим правилам.
      * Необязательный элемент.
-     *
-     * @var string
      */
-    public $oldprice;
+    public int|string|null $oldprice = null;
 
     /**
      * Идентификатор валюты товара (RUR, USD, EUR, UAH, KZT).
      * Для корректного отображения цены в национальной валюте необходимо
      * использовать идентификатор (например, UAH) с соответствующим значением цены.
      * Обязательный элемент.
-     *
-     * @var string
      */
-    public $currencyId;
+    public string|null $currencyId = null;
 
     /**
      * Идентификатор категории товара (целое число не более 18 знаков).
      * Товарное предложение может принадлежать только одной категории.
      * Обязательный элемент.
      * Элемент offer может содержать только один элемент categoryId.
-     *
-     * @var string
      */
-    public $categoryId;
+    public string|null $categoryId = null;
 
     /**
      * Ссылка на картинку соответствующего товарного предложения.
@@ -182,10 +165,8 @@ class Offer extends Model
      * «Сумки и чехлы для планшетов».
      *
      * Для всех остальных категорий – необязательный элемент.
-     *
-     * @var array|string|null
      */
-    public $picture;
+    public array|string|null $picture = null;
 
     /**
      * Элемент позволяет указать возможность купить соответствующий товар в розничном магазине.
@@ -195,10 +176,8 @@ class Offer extends Model
      * 2) true — товар можно купить в розничном магазине.
      *
      * Необязательный элемент.
-     *
-     * @var bool|null
      */
-    public $store;
+    public bool|null $store = null;
 
     /**
      * Элемент позволяет указать возможность зарезервировать выбранный товар и забрать его самостоятельно.
@@ -208,10 +187,8 @@ class Offer extends Model
      * 2) true — товар можно забрать самостоятельно.
      *
      * Необязательный элемент.
-     *
-     * @var bool|null
      */
-    public $pickup;
+    public bool|null $pickup = null;
 
     /**
      * Элемент позволяет указать возможность доставки соответствующего товара.
@@ -221,69 +198,53 @@ class Offer extends Model
      * 2) true — товар доставляется на условиях, которые описываются в партнерском интерфейсе в разделе Параметры размещения.
      *
      * Необязательный элемент.
-     *
-     * @var bool|null
      */
-    public $delivery;
+    public bool|null $delivery = null;
 
     /**
      * Стоимость доставки данного товара в своем регионе.
      *
      * Необязательный элемент.
-     *
-     * @var string|null
      */
-    public $local_delivery_cost;
+    public string|null $local_delivery_cost = null;
 
     /**
      * Группа товаров \ категория.
      * Элемент обязателен для произвольного описания.
-     *
-     * @var string|null
      */
-    public $typePrefix;
+    public string|null $typePrefix = null;
 
     /**
      * Название товарного предложения.
      * В названии упрощенного предложения рекомендуется указывать тип товара,
      * наименование и код производителя.
      * Элемент обязателен для упрощенного описания.
-     *
-     * @var string|null
      */
-    public $name;
+    public string|null $name = null;
 
     /**
      * Производитель.
      * Необязательный элемент.
-     *
-     * @var string
      */
-    public $vendor;
+    public string|null $vendor = null;
 
     /**
      * Код товара (указывается код производителя).
      * Необязательный элемент.
-     *
-     * @var string|null
      */
-    public $vendorCode;
+    public string|null $vendorCode = null;
 
     /**
      * Модель.
      * Обязательный элемент для произвольного описания.
-     *
-     * @var string|null
      */
-    public $model;
+    public string|null $model = null;
 
     /**
      * Описание товарного предложения.
      * Необязательный элемент.
-     *
-     * @var string
      */
-    public $description;
+    public string|null $description = null;
 
     /**
      * Элемент используется для отражения информации о минимальной сумме заказа, минимальной партии товара или необходимости предоплаты, а также для описания акций, скидок и распродаж.
@@ -294,10 +255,8 @@ class Offer extends Model
      * (например, минимальная сумма заказа, минимальное количество товаров или
      * необходимость предоплаты).
      * @link https://yandex.ru/support/partnermarket/elements/sales_notes.html
-     *
-     * @var string|null
      */
-    public $sales_notes;
+    public string|null $sales_notes = null;
 
     /**
      * Элемент предназначен для отметки товаров, имеющих официальную гарантию производителя.
@@ -309,10 +268,8 @@ class Offer extends Model
      * Расшифровка — 1 год, 2 месяца, 10 дней, 2 часа и 30 минут.
      *
      * Необязательный элемент.
-     *
-     * @var string|null
      */
-    public $manufacturer_warranty;
+    public string|bool|null $manufacturer_warranty = null;
 
     /**
      * Элемент предназначен для отметки товаров, имеющих гарантию продавца.
@@ -322,11 +279,10 @@ class Offer extends Model
      * Возможные значения:
      * 1) false — товар не имеет гарантию продавца;
      * 2) true — товар имеет гарантию продавца;
-     * 3) указание срока гарантии. Формат должен соответствовать ISO 8601, например: P3Y. Расшифровка — 3 года.
-     *
-     * @var string|null
+     * 3) указание срока гарантии. Формат должен соответствовать ISO 8601, например: P3Y.
+     * Расшифровка — 3 года.
      */
-    public $seller_warranty;
+    public string|bool|null $seller_warranty = null;
 
     /**
      * Элемент предназначен для указания страны производства товара.
@@ -336,18 +292,14 @@ class Offer extends Model
      * то желательно указывать данный элемент в YML-файле.
      *
      * Необязательный элемент.
-     *
-     * @var string|null
      */
-    public $country_of_origin;
+    public string|null $country_of_origin = null;
 
     /**
      * Элемент предназначен для обозначения товара, который можно скачать.
      * Необязательный элемент.
-     *
-     * @var bool|null
      */
-    public $downloadable;
+    public bool|null $downloadable = null;
 
     /**
      * Элемент обязателен для обозначения товара,
@@ -355,48 +307,37 @@ class Offer extends Model
      * либо иным образом эксплуатирующего интерес к сексу.
      *
      * Необязательный элемент.
-     *
-     * @var bool|null
      */
-    public $adult;
+    public bool|null $adult = null;
 
     /**
      * Необязательный элемент.
      *
-     * TODO
      * @link https://yandex.ru/support/partnermarket/export/vendor-model.xml
      * В форматеYML:
      * Годы задаются с помощью атрибута unit со значением year. Допустимые значения параметра age при unit="year": 0, 6, 12, 16, 18.
      * Месяцы задаются с помощью атрибута unit со значением month. Допустимые значения параметра age при unit="month": 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12.
-     *
-     * @var integer|null
      */
-    public $age;
+    public int|null $age = null;
 
     /**
      * Штрихкод товара, указанный производителем.
      * Необязательный элемент. Элемент offer может содержать несколько элементов barcode.
-     *
-     * @var string|array|null
      */
-    public $barcode;
+    public string|array|null $barcode = null;
 
     /**
      * Элемент предназначен для управления участием товарных предложений в программе «Заказ на Маркете».
      *
      * Необязательный элемент.
-     *
-     * @var bool|null
      */
-    public $cpa;
+    public bool|null $cpa = null;
 
     /**
      * Элемент обозначает товары, рекомендуемые для покупки вместе с текущим.
      * Необязательный элемент.
-     *
-     * @var string|null
      */
-    public $rec;
+    public string|null $rec = null;
 
     /**
      * Элемент предназначен для указания срока годности/срока службы
@@ -408,10 +349,8 @@ class Offer extends Model
      * для даты истечения срока годности \ срока службы: YYYY-MM-DDThh:mm.
      *
      * Необязательный элемент.
-     *
-     * @var string|null
      */
-    public $expiry;
+    public string|null $expiry = null;
 
     /**
      * Элемент предназначен для указания веса товара. Вес указывается в килограммах с учетом упаковки.
@@ -422,10 +361,8 @@ class Offer extends Model
      * если 4-ый знак после разделителя больше или равен 5, то 3-й знак увеличивается на единицу, а все последующие обнуляются.
      *
      * Необязательный элемент.
-     *
-     * @var string|null
      */
-    public $weight;
+    public string|null $weight = null;
 
     /**
      * Элемент предназначен для указания габаритов товара (длина, ширина, высота) в упаковке. Размеры указываются в сантиметрах.
@@ -436,10 +373,8 @@ class Offer extends Model
      * если 4-ый знак после разделителя больше или равен 5, то 3-й знак увеличивается на единицу, а все последующие обнуляются.
      *
      * Является обязательным элементом для категории «Одежда, обувь и аксессуары». Для остальных категорий необязательный элемент.
-     *
-     * @var string|null
      */
-    public $dimensions;
+    public string|null $dimensions = null;
 
     /**
      * Элемент предназначен для указания характеристик товара.
@@ -456,41 +391,39 @@ class Offer extends Model
      *      ['name' => 'Размер', 'value' => '42-44'],
      *      ['name' => 'Цвет', 'value' => 'Красный']
      * ]
-     *
-     * @var array|null
      */
-    public $param;
+    public array|null $param = null;
 
     /**
      * Атрибуты элемента <offer>
-     * @var array
+     * @var string[]
      */
-    public $offerElementAttributes = [
+    public array $offerElementAttributes = [
         'id', 'type', 'available', 'bid', 'cbid'
     ];
     
     /**
      * Кастомные (дополнительные) элементы <offer>
-     * @var array
+     * @var array<string, array{string|array}>
      */
-    public $customElements = [];
+    public array $customElements = [];
+
+    public Condition|null $condition = null;
 
     /**
-     * @return array
+     * @return string[]
      */
-    public function getOfferElements()
+    public function getOfferElements(): array
     {
         return array_diff(
             array_keys($this->attributes),
             $this->offerElementAttributes,
-            ['param', 'offerElementAttributes', 'customElements']
+            // exclude
+            ['param', 'offerElementAttributes', 'customElements', 'condition'],
         );
     }
 
-    /**
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             ['id', function() {
@@ -595,7 +528,7 @@ class Offer extends Model
                 }
             }, 'when' => function($model) {
                 return !empty($model);
-            }]
+            }],
         ];
     }
 }

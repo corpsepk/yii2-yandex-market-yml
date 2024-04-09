@@ -1,3 +1,13 @@
+## 0.8 (2024-04-09)
+
+### Added
+* Offer->condition
+
+### Changed
+* Minimum php version - 8.1
+* Temporary remove .github/workflows
+
+
 ## 0.7 (2020-12-22)
 
 #### Added

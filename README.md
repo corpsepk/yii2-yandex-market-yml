@@ -5,7 +5,7 @@ Yii2 module for automatically generation [Yandex.Market YML](https://yandex.ru/s
 [![Latest Version](https://img.shields.io/github/tag/corpsepk/yii2-yandex-market-yml.svg?style=flat-square&label=release)](https://github.com/corpsepk/yii2-yandex-market-yml/tags)
 [![Build Status](https://github.com/corpsepk/yii2-yandex-market-yml/workflows/build/badge.svg)](https://github.com/corpsepk/yii2-yandex-market-yml/actions)
 [![Quality Score](https://img.shields.io/scrutinizer/g/corpsepk/yii2-yandex-market-yml.svg?style=flat-square)](https://scrutinizer-ci.com/g/corpsepk/yii2-yandex-market-yml)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg?style=flat-square)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF.svg?style=flat-square)](https://php.net/)
 
 Installation
 ------------
@@ -14,13 +14,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 * Either run
 
 ```
-php composer.phar require --prefer-dist "corpsepk/yii2-yandex-market-yml" "~0.7"
+php composer.phar require --prefer-dist "corpsepk/yii2-yandex-market-yml" "~0.8"
 ```
 
 or add
 
-```json
-"corpsepk/yii2-yandex-market-yml" : "~0.7"
+```
+"corpsepk/yii2-yandex-market-yml": "~0.8"
 ```
 
 to the `require` section of your application's `composer.json` file.
@@ -109,6 +109,8 @@ public function behaviors()
 Configure `Offer` models
 ------------
 
+https://yandex.ru/support/products/offers.html
+
 Add behavior in the AR models, for example:
 
 ```php
@@ -149,6 +151,11 @@ public function behaviors()
                             'outlets' => '<outlet id="1" instock="30" />'
                         ]
                     ],
+                    'condition' => new \corpsepk\yml\dto\Condition(
+                        type: \corpsepk\yml\enums\ConditionType::PREOWNED,
+                        quality: \corpsepk\yml\enums\ConditionQuality::EXCELLENT,
+                        reason: 'Some scratches',
+                    )
                 ]);
             }
         ],
@@ -160,15 +167,7 @@ Testing
 ------------
 
 ```bash
-docker-compose -f tests/docker-compose.yml run --rm php56 phpunit
-```
-
-or 
-
-```bash
-docker-compose -f tests/docker-compose.yml up --build -d
-docker exec -it tests_php56_1 sh
-phpunit
+./vendor/bin/phpunit
 ```
 
 Howto

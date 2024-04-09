@@ -46,7 +46,7 @@ class XMLWriterHelper
         }
 
         foreach ($offer->getOfferElements() as $attribute) {
-            if (empty($offer->$attribute)) {
+            if ($offer->$attribute === null) {
                 continue;
             }
 
@@ -66,6 +66,17 @@ class XMLWriterHelper
                 $writer->text($param['value']);
                 $writer->endElement();
             }
+        }
+
+        if ($offer->condition) {
+            $writer->startElement('condition');
+
+            $writer->writeAttribute('type', $offer->condition->type->value);
+
+            $writer->writeElement('quality', $offer->condition->quality->value);
+            $writer->writeElement('reason', $offer->condition->reason);
+
+            $writer->endElement();
         }
 
         $writer->endElement();
